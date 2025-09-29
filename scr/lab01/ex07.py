@@ -14,7 +14,7 @@ def find_word(test):
             break
     
     end += test[count_2::count_2 - count_1 + 1]
-    return print(end)
+    return end
 
 test = "thisisabracadabraHt1eadljjl12ojh."
-find_word(test)
+print(find_word(test))
