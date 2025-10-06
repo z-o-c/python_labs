@@ -159,3 +159,93 @@ print("Тест 4:", flatten([[1, 2], "ab"]))
 ```
 
 ![Задание номер 1](./images/lab02/img01.png)
+
+
+Задание B
+```python
+def check_rectangular(matrix):
+    """Проверяет, что матрица прямоугольная"""
+    if not matrix:
+        return
+    first_len = len(matrix[0])
+    for row in matrix:
+        if len(row) != first_len:
+            return False
+
+def transpose(mat: list[list[float | int]]) -> list[list]:
+    """Транспонирование матрицы (Меняем строки и столбцы местами)"""
+    if check_rectangular(mat) == False:
+        return ValueError("Рваная матрица")
+
+    if not mat:
+        return []
+    return [list(item) for item in zip(*mat)]
+
+print(f"\ntranspose")    
+print("Тест 1:", transpose([[1, 2, 3]]))
+print("Тест 2:", transpose([[1], [2], [3]]))
+print("Тест 3:", transpose([[1, 2], [3, 4]]))
+print("Тест 4:", transpose([]))    
+print("Тест 5:", transpose([[1, 2], [3]])) 
+
+def row_sums(mat: list[list[float | int]]) -> list[float]:
+    """Возвращает суммы элементов каждой строки матрицы"""
+    if check_rectangular(mat) == False:
+        return ValueError("Рваная матрица")
+    
+    return [sum(item) for item in mat]
+
+print(f"\nrow_sumse")    
+print("Тест 1:", row_sums([[1, 2, 3], [4, 5, 6]]))
+print("Тест 2:", row_sums([[-1, 1], [10, -10]]))
+print("Тест 3:", row_sums([[0, 0], [0, 0]]))    
+print("Тест 4:", row_sums([[1, 2], [3]])) 
+
+def col_sums(mat: list[list[float | int]]) -> list[float]:
+    """Возвращает суммы элементов каждого столбца матрицы"""
+    if check_rectangular(mat) == False:
+        return ValueError("Рваная матрица")
+    
+    return [sum(item) for item in zip(*mat)]
+
+print(f"\ncol_sums")    
+print("Тест 1:", col_sums([[1, 2, 3], [4, 5, 6]]))
+print("Тест 2:", col_sums([[-1, 1], [10, -10]]))
+print("Тест 3:", col_sums([[0, 0], [0, 0]]))    
+print("Тест 4:", col_sums([[1, 2], [3]])) 
+```
+
+![Задание B](./images/lab02/img02.png)
+
+
+Задание C
+```python
+def format_record(rec: tuple[str, str, float]) -> str:
+    """ Форматирует запись о студенте в стандартизированную строку."""
+    result = []
+
+    if len(rec[0]) == 0:
+        return ValueError("пустое ФИО") 
+    elif len(rec[1]) == 0:
+        return ValueError("пустая группа")
+    elif not isinstance(rec[2], float):
+        return ValueError("неверный тип GPA") 
+    
+    full_name = ((rec[0].strip()).title()).split()
+    full_name_abbrevition = [str(x) for x in " ".join(full_name) if x.isupper()]
+    result.append(f"{full_name[0]} {".".join(full_name_abbrevition[1:])}.")
+    result.append(f"гр. {rec[1]}")
+    result.append(f"GPA {rec[2]:.2f}")
+
+    return ", ".join(result)
+
+
+print("Тест 1:", format_record(("Иванов Иван Иванович", "BIVT-25", 4.6)))
+print("Тест 2:", format_record(("Петров Пётр", "IKBO-12", 5.0)))
+print("Тест 3:", format_record(("Петров Пётр Петрович", "IKBO-12", 5.0)))
+print("Тест 4:", format_record(("  сидорова  анна   сергеевна ", "ABB-01", 3.999)))
+print("Тест 5:", format_record(("сидорова  анна   сергеевна ", "", 3.999)))
+print("Тест 6:", format_record(("Петров Пётр", "IKBO-12", "5.0")))
+```
+
+![Задание C](./images/lab02/img03.png)
