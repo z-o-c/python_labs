@@ -2,17 +2,19 @@ def min_max(nums: list[float | int]) -> tuple[float | int, float | int]:
     """Возвращает кортеж (минимум, максимум). Если список пуст — ValueError"""
     
     if len(nums) == 0:
-        return ValueError("Список пуст")
+        raise ValueError("Список пуст")
     
     else:
         return (min(nums),max(nums))
-
-print("min_max")
-print("Тест 1:", min_max([3, -1, 5, 5, 0]))
-print("Тест 2:", min_max([42]))
-print("Тест 3:", min_max([-5, -2, -9]))
-print("Тест 4:", min_max([]))
-print("Тест 5:", min_max([1.5, 2, 2.0, -3.1]))
+try:
+    print("min_max")
+    print("Тест 1:", min_max([3, -1, 5, 5, 0]))
+    print("Тест 2:", min_max([42]))
+    print("Тест 3:", min_max([-5, -2, -9]))
+    print("Тест 4:", min_max([1.5, 2, 2.0, -3.1]))
+    print("Тест 5:", min_max([]))
+except ValueError as e:
+    print(f"Ошибка: {e}")
 
 
 def unique_sorted(nums: list[float | int]) -> list[float | int]:
@@ -33,13 +35,16 @@ def flatten(mat: list[list | tuple]) -> list:
 
     for i in mat:
         if not isinstance(i, (list, tuple)):
-            return TypeError("строка не строка строк матрицы")
+            raise TypeError("строка не строка строк матрицы")
         result.extend(i)    
     
     return result
 
-print(f"\nflatten")
-print("Тест 1:", flatten([[1, 2], [3, 4]]))
-print("Тест 2:", flatten([[1, 2], (3, 4, 5)]))
-print("Тест 3:", flatten([[1], [], [2, 3]]))
-print("Тест 4:", flatten([[1, 2], "ab"]))
+try:
+    print(f"\nflatten")
+    print("Тест 1:", flatten([[1, 2], [3, 4]]))
+    print("Тест 2:", flatten([[1, 2], (3, 4, 5)]))
+    print("Тест 3:", flatten([[1], [], [2, 3]]))
+    print("Тест 4:", flatten([[1, 2], "ab"]))
+except TypeError as e:
+    print(f"Ошибка: {e}")
