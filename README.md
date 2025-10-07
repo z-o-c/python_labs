@@ -238,9 +238,9 @@ def format_record(rec: tuple[str, str, float]) -> str:
     """ Форматирует запись о студенте в стандартизированную строку."""
 
     if not isinstance(rec, tuple):
-            raise ValueError("входные данные должны быть tuple")
+        raise ValueError("входные данные должны быть tuple")
     elif len(rec) != 3:
-            raise ValueError("tuple должен содержать ровно 3 элемента")
+        raise ValueError("tuple должен содержать ровно 3 элемента")
 
     result = []
 
