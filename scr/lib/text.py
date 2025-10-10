@@ -23,17 +23,6 @@ def normalize(text: str, *, casefold: bool = True, yo2e: bool = True) -> str:
 
     return result
 
-try:
-    print(f"\nnormalize")
-    print("Тест 1:", normalize("ПрИвЕт\nМИр\t"))
-    print("Тест 2:", normalize("ёжик, Ёлка"))
-    print("Тест 3:", normalize("Hello\r\nWorld"))
-    print("Тест 3:", normalize("  двойные   пробелы  "))
-
-except ValueError as e:
-    print(f"Ошибка! {e}")
-
-
 def tokenize(text: str) -> list[str]:
     """
     Функция разделяет входную строку на части, используя в качестве разделителей
@@ -44,25 +33,14 @@ def tokenize(text: str) -> list[str]:
     if not isinstance(text, str):
         raise ValueError("tokenize: text не str")
     
-    split_result = re.split("[^\w-]+", text)
+    split_result = re.split(r"[^\w-]+", text)
     
     return [item for item in split_result if len(item) >= 1]
     
-try:
-    print(f"\ntokenize")
-    print("Тест 1:", tokenize("привет мир"))
-    print("Тест 2:", tokenize("hello,world!!!"))
-    print("Тест 3:", tokenize("по-настоящему круто"))
-    print("Тест 4:", tokenize("2025 год"))
-    print("Тест 5:", tokenize("emoji 😀 не слово"))
-
-except ValueError as e:
-    print(f"Ошибка! {e}")
-
 
 def count_freq(tokens: list[str]) -> dict[str, int]:
     """
-    AAAAAAAAAA
+    Подсчитывает частоту встречаемости слов в списке токенов.
     """
     from collections import Counter
 
@@ -73,18 +51,13 @@ def count_freq(tokens: list[str]) -> dict[str, int]:
 
 def top_n(freq: dict[str, int], n: int = 5) -> list[tuple[str, int]]:
     """
-    AAAAAAAAAAAAA
+    Возвращает топ-N самых частых слов с сортировкой по убыванию частоты.
+    
+    При равных частотах слова сортируются в алфавитном порядке.
     """
 
     if not isinstance(freq, dict):
         raise ValueError("top_n: freq не  dict")
     
-    return sorted(freq.items())[:n]
+    return sorted(freq.items(), key=lambda item: item[1], reverse=True)[:n]
 
-try:
-    print(f"\ncount_freq + top_n")
-    print("Тест 1:", top_n(count_freq(["a","b","a","c","b","a"]), 2))
-    print("Тест 2:", top_n(count_freq(["bb","aa","bb","aa","cc"]), 2))
-
-except ValueError as e:
-    print(f"Ошибка! {e}")
