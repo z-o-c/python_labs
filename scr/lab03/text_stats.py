@@ -1,24 +1,28 @@
-
 import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
-# Теперь можем импортировать функции из lib.text
 from lib.text import *
 
-def print_table(words_data):
-    """Печатает таблицу со словами и их частотой"""
+def print_table(words_data: list[tuple[str, int]]) -> None:
+    """
+    Выводит форматированную таблицу слов и их частот в отсортированном виде.
+    
+    Функция принимает список кортежей (слово, частота) и выводит их в виде
+    читаемой таблицы с выравниванием колонок. Ширина первой колонки автоматически
+    подстраивается под самое длинное слово в данных или заголовке.
+    """
     if not words_data:
         raise ValueError("print_table: words_data пуст")
     
-    # Находим самое длинное слово
-    max_word_length = max(len(word) for word, _ in words_data)
+    max_word_length = max(len(word) for word, count in words_data)
+
+    if len("слово") > max_word_length:
+        max_word_length = len("слово")
     
-    # Печатаем заголовок
     print(f"{'слово':<{max_word_length}} | частота")
     print("-" * max_word_length + "-|-" + "-" * 7)
     
-    # Печатаем данные
     for word, count in words_data:
         print(f"{word:<{max_word_length}} | {count}")
 
