@@ -4,6 +4,10 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from lib.text import *
 
+# Флаг для включения/выключения табличного режима
+# True - табличный вывод, False - простой список
+TABLE_MODE = True
+
 def print_table(words_data: list[tuple[str, int]]) -> None:
     """
     Выводит форматированную таблицу слов и их частот в отсортированном виде.
@@ -26,6 +30,19 @@ def print_table(words_data: list[tuple[str, int]]) -> None:
     for word, count in words_data:
         print(f"{word:<{max_word_length}} | {count}")
 
+def print_simple(words_data: list[tuple[str, int]]) -> None:
+    """
+    Выводит список слов и их частот в простом формате.
+    
+    Функция принимает список кортежей (слово, частота) и выводит их
+    в виде простого списка без форматирования таблицы.
+    """
+    if not words_data:
+        raise ValueError("print_simple: words_data пуст")
+    
+    for word, count in words_data:
+        print(f"{word}: {count}")
+
 try:
     inpt_text = input("Введите текст: ")
     normalize_text = normalize(inpt_text)
@@ -37,7 +54,10 @@ try:
     print(f"Уникальных слов: {len(freq)}")
 
     print("Топ-5:")
-    print_table(top_words)
+    if TABLE_MODE:
+        print_table(top_words)
+    else:
+        print_simple(top_words)
 
 except ValueError as e:
     print(f"Ошибка: {e}")

@@ -3,6 +3,7 @@ from pathlib import Path
 def read_text(path: str | Path, encoding: str = "utf-8") -> str:
     """
     Читает текст из файла и возвращает его как строку.
+    она пока ещё не доделана
     """
 
     p = Path(path)
@@ -12,6 +13,7 @@ def read_text(path: str | Path, encoding: str = "utf-8") -> str:
     
     if not isinstance(encoding, str):
         raise ValueError("encoding должен быть str")
+    
     
     if len(encoding) == 0:
         raise ValueError("encoding пустой")
@@ -40,6 +42,7 @@ from typing import Iterable, Sequence
 def write_csv(rows: Iterable[Sequence], path: str | Path, header: tuple[str, ...] | None = None) -> None:
     """
     Записывает данные в CSV файл.
+    она пока ещё не доделана
     """
     if not isinstance(rows, Iterable):
         raise ValueError("rows должен быть Iterable")
