@@ -91,7 +91,7 @@ def count_freq(tokens: list[str]) -> dict[str, int]:
     if len(tokens) == 0:
         raise ValueError("count_freq: пустой tokens")
 
-    return dict(sorted(dict(Counter(tokens)).items(), key=lambda item: (-item[1], item[0])))
+    return dict(sorted(Counter(tokens).items(), key=lambda item: (-item[1], item[0])))
 ```
 
 ### 4. top_n(freq, n)
