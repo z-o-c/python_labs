@@ -275,6 +275,8 @@ except ValueError as e:
 
 ## Лабораторная номер 3
 
+- [Лабораторная 3 (ссылка на подробный README)](./src/lab03/README.md)
+
 Задание A
 ```python
 def normalize(text: str, *, casefold: bool = True, yo2e: bool = True) -> str:
@@ -439,3 +441,142 @@ except ValueError as e:
 ```
 
 ![Задание B★](./images/lab03/img02.png)
+
+
+## Лабораторная номер 4
+
+- [Лабораторная 4 (ссылка на подробный README)](./src/lab04/README.md)
+
+Задание A
+```python
+from pathlib import Path
+import csv
+from typing import Iterable, Sequence
+
+
+def ensure_parent_dir(path: str | Path) -> None:
+    """Создать родительские директории для указанного пути, если они не существуют."""
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+
+def read_text(path: str | Path, encoding: str = "utf-8") -> str:
+    """Прочитать файл целиком и вернуть его содержимое как одну строку."""
+    if not isinstance(path, (str, Path)):
+        raise TypeError("path должен быть str или Path")
+    if not isinstance(encoding, str) or not encoding:
+        raise TypeError("encoding должен быть непустой строкой")
+
+    p = Path(path)
+    with p.open("r", encoding=encoding) as file:
+        return file.read()
+
+def write_csv(
+    rows: Iterable[Sequence],
+    path: str | Path,
+    header: tuple[str, ...] | None = None,
+) -> None:
+    """Создать/перезаписать CSV с разделителем ","."""
+    if not isinstance(path, (str, Path)):
+        raise TypeError("path должен быть str или Path")
+    if header is not None and not isinstance(header, tuple):
+        raise TypeError("header должен быть tuple или None")
+
+    p = Path(path)
+    ensure_parent_dir(p)
+
+    rows_list = list(rows)
+
+    if rows_list:
+        row_length = len(rows_list[0])
+        for row in rows_list:
+            if len(row) != row_length:
+                raise ValueError("все строки в rows должны иметь одинаковую длину")
+    if header is not None and rows_list and len(header) != row_length:
+        raise ValueError("длина header должна совпадать с длиной строк в rows")
+
+    with p.open("w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file, delimiter=",")
+        if header is not None:
+            writer.writerow(header)
+        for row in rows_list:
+            writer.writerow(row)
+```
+
+
+
+Задание B★
+```python
+from io_txt_csv import *
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from lib.text import *
+
+# Читаем и обрабатываем первый файл
+if len(read_text("data/lab04/input.txt")) == 0:
+    write_csv([], "data/lab04/report.csv", header=("word", "count"))
+else:
+    text_1 = normalize(read_text("data/lab04/input.txt"))
+    token_text_1 = tokenize(text_1)
+    num_tokens_1 = count_freq(token_text_1)
+    top_tokens_1 = top_n(num_tokens_1, 5)
+
+    print("input.txt:")
+    print(f"Всего слов: {len(token_text_1)}")
+    print(f"Уникальных слов: {len(num_tokens_1)}")
+    print("Топ-5:")
+    for word, count in top_tokens_1:
+        print(f"{word}: {count}")
+    print("\n")
+
+    write_csv([(word, count) for word, count in num_tokens_1.items()], 
+              "data/lab04/report.csv", header=("word", "count"))
+
+# Читаем и обрабатываем несколько входных файлов + «сводный» отчет
+text_2 = normalize(read_text("data/lab04/a.txt"))
+token_text_2 = tokenize(text_2)
+num_tokens_2 = count_freq(token_text_2)
+
+text_3 = normalize(read_text("data/lab04/b.txt"))
+token_text_3 = tokenize(text_3)
+num_tokens_3 = count_freq(token_text_3)
+
+
+report_per_file = {
+    "a.txt": [(word, count) for word, count in num_tokens_2.items()],
+    "b.txt": [(word, count) for word, count in num_tokens_3.items()]
+}
+
+
+report_total = count_freq(token_text_2 + token_text_3)
+report_total_list = [(word, count) for word, count in report_total.items()]
+
+# записываем отчет по файлам
+write_csv([(file, word, count) for file, words in report_per_file.items() 
+           for word, count in words], 
+          "data/lab04/report_per_file.csv", header=("file", "word", "count"))
+
+# записываем общий отчет
+write_csv([(word, count) for word, count in report_total.items()], 
+          "data/lab04/report_total.csv", header=("word", "count"))
+
+# выводим красивый отчет в табличном виде
+print("Общий отчет:")
+print_table(report_total_list)
+print("\n")
+
+print("Отчет по файлам:")
+print_table_per_file(report_per_file)
+```
+#### 1. report.csv (анализ input.txt)
+![Задание B★](./images/lab04/img02.png)
+
+
+#### 2. report_per_file.csv (анализ по файлам)
+![Задание B★](./images/lab04/img04.png)
+
+#### 3. report_total.csv (сводный отчет)
+![Задание B★](./images/lab04/img03.png)
+
+### Консольный вывод:
+![Задание B★](./images/lab04/img01.png)

@@ -3,6 +3,14 @@ import csv
 from typing import Iterable, Sequence
 
 
+def ensure_parent_dir(path: str | Path) -> None:
+    """
+    Создать родительские директории для указанного пути, если они не существуют.
+    """
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+
+
 def read_text(path: str | Path, encoding: str = "utf-8") -> str:
     """
     Прочитать файл целиком и вернуть его содержимое как одну строку.
@@ -31,8 +39,9 @@ def read_text(path: str | Path, encoding: str = "utf-8") -> str:
         raise TypeError("encoding должен быть непустой строкой")
 
     p = Path(path)
-    with p.open("r", encoding=encoding) as f:
-        return f.read()
+
+    with p.open("r", encoding=encoding) as file:
+        return file.read()
 
 def write_csv(
     rows: Iterable[Sequence],
@@ -54,12 +63,10 @@ def write_csv(
         raise TypeError("header должен быть tuple или None")
 
     p = Path(path)
-    p.parent.mkdir(parents=True, exist_ok=True)
+    ensure_parent_dir(p)
 
     rows_list = list(rows)
 
-    # Проверка одинаковой длины строк
-    row_length: int | None = None
     if rows_list:
         row_length = len(rows_list[0])
         for row in rows_list:
@@ -68,13 +75,17 @@ def write_csv(
     if header is not None and rows_list and len(header) != row_length:
         raise ValueError("длина header должна совпадать с длиной строк в rows")
 
-    with p.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f, delimiter=",")
+    with p.open("w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file, delimiter=",")
         if header is not None:
             writer.writerow(header)
         for row in rows_list:
             writer.writerow(row)
 
-# from src.io_txt_csv import read_text, write_csv
-# txt = read_text("data/input.txt")
-# write_csv([("word","count"),("test",3)], "data/check.csv")
+
+# import sys
+# import os
+# sys.path.append(os.path.join(os.path.dirname(__file__), '..','..'))
+
+# txt = read_text("data/lab04/input.txt")  # должен вернуть строку
+# write_csv([("word","count"),("test",4)], "data/check.csv")  # создаст CSV

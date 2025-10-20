@@ -87,3 +87,54 @@ def top_n(freq: dict[str, int], n: int = 5) -> list[tuple[str, int]]:
         raise ValueError("top_n: пустой freq")
     
     return sorted(freq.items(), key=lambda item: (-item[1], item[0]))[:n]
+
+def print_table(words_data: list[tuple[str, int]]) -> None:
+    """
+    Выводит форматированную таблицу слов и их частот в отсортированном виде.
+    
+    Функция принимает список кортежей (слово, частота) и выводит их в виде
+    читаемой таблицы с выравниванием колонок. Ширина первой колонки автоматически
+    подстраивается под самое длинное слово в данных или заголовке.
+    """
+    if not words_data:
+        raise ValueError("print_table: words_data пуст")
+    
+    max_word_length = max(len(word) for word, count in words_data)
+
+    if len("слово") > max_word_length:
+        max_word_length = len("слово")
+    
+    print(f"{'слово':<{max_word_length}} | частота")
+    print("-" * max_word_length + "-|-" + "-" * 7)
+    
+    for word, count in words_data:
+        print(f"{word:<{max_word_length}} | {count}")
+
+def print_table_per_file(words_data: dict[str, list[tuple[str, int]]]) -> None:
+    """
+    Выводит форматированную таблицу слов и их частот в отсортированном виде для каждого файла.
+    
+    Функция принимает список кортежей (слово, частота) и выводит их в виде
+    читаемой таблицы с выравниванием колонок. Ширина первой колонки автоматически
+    подстраивается под самое длинное слово в данных или заголовке для каждого файла.
+    """
+    if not words_data:
+        raise ValueError("print_table_per_file: words_data пуст")
+    
+    max_word_length = max(len(word) for file, words in words_data.items() for word, count in words)
+
+    max_file_length = max(len(file) for file, words in words_data.items())
+
+    if len("слово") > max_word_length:
+        max_word_length = len("слово")
+    
+    if len("файл") > max_file_length:
+        max_file_length = len("файл")
+    
+    print("-" * max_file_length + "-|-" + "-" * max_word_length + "-|-" + "-" * len("частота"))
+    print(f"{'файл':<{max_file_length}} | {'слово':^{max_word_length}} | {'частота'}")
+    print("-" * max_file_length + "-|-" + "-" * max_word_length + "-|-" + "-" * len("частота"))
+    
+    for file, words in words_data.items():
+        for word, count in words:
+            print(f"{file:<{max_file_length}} | {word:<{max_word_length}} | {count}")
