@@ -138,3 +138,13 @@ def print_table_per_file(words_data: dict[str, list[tuple[str, int]]]) -> None:
     for file, words in words_data.items():
         for word, count in words:
             print(f"{file:<{max_file_length}} | {word:<{max_word_length}} | {count}")
+
+from pathlib import Path
+from typing import Union
+
+def ensure_parent_dir(path: Union[str, Path]) -> None:
+    """
+    Создать родительские директории для указанного пути, если они не существуют.
+    """
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)

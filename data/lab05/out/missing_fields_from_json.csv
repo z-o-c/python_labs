@@ -1,0 +1,4 @@
+name,age,city,country,email
+Alice,22,SPB,,
+Bob,25,,Russia,
+Carlos,,Kazan,,carlos@example.com
