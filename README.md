@@ -1025,7 +1025,8 @@ pip install -r requirements.txt
   ![csv2xlsx](/images/lab06/img08.png)
   
   - **help**
-![help](/images/lab06/img04.png)
+
+  ![help](/images/lab06/img04.png)
 
 ## Особенности реализации
 
@@ -1158,30 +1159,6 @@ python src/lab06/cli_convert.py csv2xlsx --in data/lab06/samples/people.csv --ou
 - **`cli_convert.py`** переиспользует функции конвертации из лабораторной работы 5
 - **Модульная архитектура** - каждый CLI-модуль независим и может использоваться отдельно
 
-### Обработка ошибок
-
-#### Типичные ошибки и их обработка:
-
-1. **Файл не найден:**
-   ```bash
-   Ошибка при чтении файла: [Errno 2] No such file or directory: 'несуществующий_файл.txt'
-   ```
-
-2. **Неправильная кодировка:**
-   ```bash
-   Ошибка при чтении файла: 'charmap' codec can't decode byte 0x90
-   ```
-
-3. **Пустой файл:**
-   ```bash
-   Ошибка: normalize: пустой text
-   ```
-
-4. **Неправильные аргументы:**
-   ```bash
-   usage: cli_text.py [-h] {cat,stats} ...
-   cli_text.py: error: the following arguments are required: --input
-   ```
 
 ### Примеры полного цикла работы
 
