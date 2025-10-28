@@ -40,15 +40,20 @@ pip install -r requirements.txt
 
 - **cli_text**
   - **cat**
-![cat](/images/lab06/img01.png)
+
+  ![cat](/images/lab06/img01.png)
   - **stats**
-![stats](/images/lab06/img02.png)
+
+  ![stats](/images/lab06/img02.png)
   - **help**
-![help](/images/lab06/img05.png)
+
+  ![help](/images/lab06/img05.png)
 
 - **cli_convert**
   - **csv2json + json2csv + csv2xlsx**
-![csv2json + json2csv + csv2xlsx](/images/lab06/img03.png)
+
+  ![csv2json + json2csv + csv2xlsx](/images/lab06/img03.png)
+  
   - **csv2json**
   
   ![csv2json](/images/lab06/img07.png)
