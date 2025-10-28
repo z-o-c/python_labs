@@ -70,8 +70,9 @@ def json_to_csv(json_path: str, csv_path: str) -> None:
             raise ValueError(f"Элемент {i} не является словарем")
     
     # Собираем все поля, начиная с полей первого объекта
-    all_fields = list(data[0].keys())  # начинаем с полей первого объекта
-    for item in data[1:]:  # добавляем поля из остальных объектов
+    all_fields = list(data[0].keys())  # берем ключи первого объекта как стартовый набор полей
+    
+    for item in data[1:]:  # проходим остальные объекты и добавляем недостающие поля в all_fields
         for field in item.keys():
             if field not in all_fields:
                 all_fields.append(field)
@@ -138,7 +139,7 @@ def csv_to_json(csv_path: str, json_path: str) -> None:
         if not sample.strip():
             raise ValueError("CSV файл пустой")
         
-        file.seek(0)  # Возвращаемся к началу файла
+        file.seek(0)  # Возвращаемся к началу файла полсе file.read(1024)
         
         # Проверяем наличие заголовков через Sniffer
         sniffer = csv.Sniffer()

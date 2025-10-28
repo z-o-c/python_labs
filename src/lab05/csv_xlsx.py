@@ -72,7 +72,8 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
                     max_length = len(str(cell.value))
             except (TypeError, ValueError): # если значение не строковое или нет значения
                 pass
-
+        
+        # выставляем ширину колонки: максимальная длина + 2 пробела запаса
         sheet.column_dimensions[column_letter].width = max_length + 2
         
     workbook.save(path_xlsx)

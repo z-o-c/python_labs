@@ -22,6 +22,7 @@ def main():
 
     args = parser.parse_args()
     
+    # если подкоманда не указана — показать помощь и выйти.
     if not args.command:
         parser.print_help()
         return
