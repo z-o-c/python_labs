@@ -7,6 +7,7 @@ def check_rectangular(matrix):
         if len(row) != first_len:
             return False
 
+
 def transpose(mat: list[list[float | int]]) -> list[list]:
     """Транспонирование матрицы (Меняем строки и столбцы местами)"""
     if check_rectangular(mat) == False:
@@ -16,44 +17,49 @@ def transpose(mat: list[list[float | int]]) -> list[list]:
         return []
     return [list(item) for item in zip(*mat)]
 
+
 try:
-    print(f"\ntranspose")    
+    print(f"\ntranspose")
     print("Тест 1:", transpose([[1, 2, 3]]))
     print("Тест 2:", transpose([[1], [2], [3]]))
     print("Тест 3:", transpose([[1, 2], [3, 4]]))
-    print("Тест 4:", transpose([]))    
-    print("Тест 5:", transpose([[1, 2], [3]])) 
+    print("Тест 4:", transpose([]))
+    print("Тест 5:", transpose([[1, 2], [3]]))
 except ValueError as e:
     print(f"Ошибка: {e}")
+
 
 def row_sums(mat: list[list[float | int]]) -> list[float]:
     """Возвращает суммы элементов каждой строки матрицы"""
     if check_rectangular(mat) == False:
         raise ValueError("Рваная матрица")
-    
+
     return [sum(item) for item in mat]
 
+
 try:
-    print(f"\nrow_sumse")    
+    print(f"\nrow_sumse")
     print("Тест 1:", row_sums([[1, 2, 3], [4, 5, 6]]))
     print("Тест 2:", row_sums([[-1, 1], [10, -10]]))
-    print("Тест 3:", row_sums([[0, 0], [0, 0]]))    
-    print("Тест 4:", row_sums([[1, 2], [3]])) 
+    print("Тест 3:", row_sums([[0, 0], [0, 0]]))
+    print("Тест 4:", row_sums([[1, 2], [3]]))
 except ValueError as e:
     print(f"Ошибка: {e}")
+
 
 def col_sums(mat: list[list[float | int]]) -> list[float]:
     """Возвращает суммы элементов каждого столбца матрицы"""
     if check_rectangular(mat) == False:
         raise ValueError("Рваная матрица")
-    
+
     return [sum(item) for item in zip(*mat)]
 
+
 try:
-    print(f"\ncol_sums")    
+    print(f"\ncol_sums")
     print("Тест 1:", col_sums([[1, 2, 3], [4, 5, 6]]))
     print("Тест 2:", col_sums([[-1, 1], [10, -10]]))
-    print("Тест 3:", col_sums([[0, 0], [0, 0]]))    
-    print("Тест 4:", col_sums([[1, 2], [3]])) 
+    print("Тест 3:", col_sums([[0, 0], [0, 0]]))
+    print("Тест 4:", col_sums([[1, 2], [3]]))
 except ValueError as e:
     print(f"Ошибка: {e}")

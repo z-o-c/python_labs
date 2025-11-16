@@ -1,26 +1,28 @@
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 from lib.text import ensure_parent_dir
 from pathlib import Path
 import csv
 import openpyxl
 
+
 def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
     """
     Конвертирует CSV файл в формат XLSX (Excel).
-    
+
     Функция читает CSV файл и создает новый XLSX файл с теми же данными.
     Первая строка CSV интерпретируется как заголовок таблицы.
-    
+
     Особенности:
     - Использует библиотеку openpyxl для создания Excel файлов
     - Создает лист с названием "Sheet1"
     - Автоматически подбирает ширину колонок по содержимому (минимум 8 символов)
     - Поддерживает UTF-8 кодировку
     - Создает родительские директории для выходного файла при необходимости
-    
+
     Raises:
         FileNotFoundError: Если исходный CSV файл не найден
         IsADirectoryError: Если csv_path указывает на директорию
@@ -44,14 +46,14 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
     if not xlsx_path:
         raise ValueError("xlsx_path пустой")
 
-    if not csv_path.endswith('.csv'):
+    if not csv_path.endswith(".csv"):
         raise ValueError("csv_path должен указывать на .csv файл")
-    if not xlsx_path.endswith('.xlsx'):
+    if not xlsx_path.endswith(".xlsx"):
         raise ValueError("xlsx_path должен указывать на .xlsx файл")
 
     # Создание родительских директорий для выходного файла
     ensure_parent_dir(path_xlsx)
-    
+
     with path_csv.open("r", newline="", encoding="utf-8") as file:
         csv_reader = csv.reader(file)
         workbook = openpyxl.Workbook()
@@ -65,18 +67,22 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
     for col_idx, column in enumerate(sheet.columns, 1):
         max_length = 8  # минимальная ширина
         column_letter = openpyxl.utils.get_column_letter(col_idx)
-        
+
         for cell in column:
             try:
                 if cell.value and len(str(cell.value)) > max_length:
                     max_length = len(str(cell.value))
-            except (TypeError, ValueError): # если значение не строковое или нет значения
+            except (
+                TypeError,
+                ValueError,
+            ):  # если значение не строковое или нет значения
                 pass
-        
+
         # выставляем ширину колонки: максимальная длина + 2 пробела запаса
         sheet.column_dimensions[column_letter].width = max_length + 2
-        
+
     workbook.save(path_xlsx)
+
 
 try:
     csv_to_xlsx("data/lab05/samples/cities.csv", "data/lab05/out/cities_from_csv.xlsx")

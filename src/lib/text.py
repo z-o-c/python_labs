@@ -1,7 +1,7 @@
 def normalize(text: str, *, casefold: bool = True, yo2e: bool = True) -> str:
     """
     Нормализует текст путем удаления специальных символов и приведения к единому формату.
-    
+
     Функция выполняет следующие преобразования:
     - Удаляет символы табуляции (\t) и переноса строки (\n)
     - Убирает лишние пробелы (в начале, конце и множественные внутри строки)
@@ -15,20 +15,21 @@ def normalize(text: str, *, casefold: bool = True, yo2e: bool = True) -> str:
 
     if not isinstance(text, str):
         raise ValueError("normalize: text не str")
-    
+
     if len(text) == 0:
         raise ValueError("normalize: пустой text")
 
-    result = (((text.replace("\t"," ")).replace("\r"," ")).replace("\n"," "))
+    result = ((text.replace("\t", " ")).replace("\r", " ")).replace("\n", " ")
     result = " ".join((result.strip()).split())
 
     if casefold:
         result = result.casefold()
 
     if yo2e:
-        result = result.replace('ё', 'е')
+        result = result.replace("ё", "е")
 
     return result
+
 
 def tokenize(text: str) -> list[str]:
     """
@@ -44,14 +45,14 @@ def tokenize(text: str) -> list[str]:
 
     if not isinstance(text, str):
         raise ValueError("tokenize: text не str")
-    
+
     if len(text) == 0:
         raise ValueError("tokenize: пустой text")
-    
+
     split_result = re.split(r"[^\w-]+", text)
-    
+
     return [item for item in split_result if len(item) >= 1]
-    
+
 
 def count_freq(tokens: list[str]) -> dict[str, int]:
     """
@@ -65,11 +66,12 @@ def count_freq(tokens: list[str]) -> dict[str, int]:
 
     if not isinstance(tokens, list):
         raise ValueError("tokenize: text не str")
-    
+
     if len(tokens) == 0:
         raise ValueError("count_freq: пустой tokens")
 
     return dict(sorted(Counter(tokens).items(), key=lambda item: (-item[1], item[0])))
+
 
 def top_n(freq: dict[str, int], n: int = 5) -> list[tuple[str, int]]:
     """
@@ -82,65 +84,83 @@ def top_n(freq: dict[str, int], n: int = 5) -> list[tuple[str, int]]:
 
     if not isinstance(freq, dict):
         raise ValueError("top_n: freq не  dict")
-    
+
     if len(freq) == 0:
         raise ValueError("top_n: пустой freq")
-    
+
     return sorted(freq.items(), key=lambda item: (-item[1], item[0]))[:n]
+
 
 def print_table(words_data: list[tuple[str, int]]) -> None:
     """
     Выводит форматированную таблицу слов и их частот в отсортированном виде.
-    
+
     Функция принимает список кортежей (слово, частота) и выводит их в виде
     читаемой таблицы с выравниванием колонок. Ширина первой колонки автоматически
     подстраивается под самое длинное слово в данных или заголовке.
     """
     if not words_data:
         raise ValueError("print_table: words_data пуст")
-    
+
     max_word_length = max(len(word) for word, count in words_data)
 
     if len("слово") > max_word_length:
         max_word_length = len("слово")
-    
+
     print(f"{'слово':<{max_word_length}} | частота")
     print("-" * max_word_length + "-|-" + "-" * 7)
-    
+
     for word, count in words_data:
         print(f"{word:<{max_word_length}} | {count}")
+
 
 def print_table_per_file(words_data: dict[str, list[tuple[str, int]]]) -> None:
     """
     Выводит форматированную таблицу слов и их частот в отсортированном виде для каждого файла.
-    
+
     Функция принимает список кортежей (слово, частота) и выводит их в виде
     читаемой таблицы с выравниванием колонок. Ширина первой колонки автоматически
     подстраивается под самое длинное слово в данных или заголовке для каждого файла.
     """
     if not words_data:
         raise ValueError("print_table_per_file: words_data пуст")
-    
-    max_word_length = max(len(word) for file, words in words_data.items() for word, count in words)
+
+    max_word_length = max(
+        len(word) for file, words in words_data.items() for word, count in words
+    )
 
     max_file_length = max(len(file) for file, words in words_data.items())
 
     if len("слово") > max_word_length:
         max_word_length = len("слово")
-    
+
     if len("файл") > max_file_length:
         max_file_length = len("файл")
-    
-    print("-" * max_file_length + "-|-" + "-" * max_word_length + "-|-" + "-" * len("частота"))
+
+    print(
+        "-" * max_file_length
+        + "-|-"
+        + "-" * max_word_length
+        + "-|-"
+        + "-" * len("частота")
+    )
     print(f"{'файл':<{max_file_length}} | {'слово':^{max_word_length}} | {'частота'}")
-    print("-" * max_file_length + "-|-" + "-" * max_word_length + "-|-" + "-" * len("частота"))
-    
+    print(
+        "-" * max_file_length
+        + "-|-"
+        + "-" * max_word_length
+        + "-|-"
+        + "-" * len("частота")
+    )
+
     for file, words in words_data.items():
         for word, count in words:
             print(f"{file:<{max_file_length}} | {word:<{max_word_length}} | {count}")
 
+
 from pathlib import Path
 from typing import Union
+
 
 def ensure_parent_dir(path: Union[str, Path]) -> None:
     """
@@ -149,6 +169,7 @@ def ensure_parent_dir(path: Union[str, Path]) -> None:
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
 
+
 def read_text(path: str | Path, encoding: str = "utf-8") -> str:
     """
     Прочитать файл целиком и вернуть его содержимое как одну строку.
@@ -156,7 +177,7 @@ def read_text(path: str | Path, encoding: str = "utf-8") -> str:
     Параметры:
         path: Путь к файлу (str или Path).
         encoding: Кодировка чтения (по умолчанию "utf-8").
-            Распространенные варианты кодировок: 
+            Распространенные варианты кодировок:
                 - 'utf-8' (стандартная)
                 - 'cp1251', 'windows-1251' (русская Windows)
                 - 'koi8-r' (русская KOI8)
@@ -185,17 +206,17 @@ def read_text(path: str | Path, encoding: str = "utf-8") -> str:
 def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
     """
     Конвертирует CSV файл в формат XLSX (Excel).
-    
+
     Функция читает CSV файл и создает новый XLSX файл с теми же данными.
     Первая строка CSV интерпретируется как заголовок таблицы.
-    
+
     Особенности:
     - Использует библиотеку openpyxl для создания Excel файлов
     - Создает лист с названием "Sheet1"
     - Автоматически подбирает ширину колонок по содержимому (минимум 8 символов)
     - Поддерживает UTF-8 кодировку
     - Создает родительские директории для выходного файла при необходимости
-    
+
     Raises:
         FileNotFoundError: Если исходный CSV файл не найден
         IsADirectoryError: Если csv_path указывает на директорию
@@ -221,14 +242,14 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
     if not xlsx_path:
         raise ValueError("xlsx_path пустой")
 
-    if not csv_path.endswith('.csv'):
+    if not csv_path.endswith(".csv"):
         raise ValueError("csv_path должен указывать на .csv файл")
-    if not xlsx_path.endswith('.xlsx'):
+    if not xlsx_path.endswith(".xlsx"):
         raise ValueError("xlsx_path должен указывать на .xlsx файл")
 
     # Создание родительских директорий для выходного файла
     ensure_parent_dir(path_xlsx)
-    
+
     with path_csv.open("r", newline="", encoding="utf-8") as file:
         csv_reader = csv.reader(file)
         workbook = openpyxl.Workbook()
@@ -242,26 +263,29 @@ def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
     for col_idx, column in enumerate(sheet.columns, 1):
         max_length = 8  # минимальная ширина
         column_letter = openpyxl.utils.get_column_letter(col_idx)
-        
+
         for cell in column:
             try:
                 if cell.value and len(str(cell.value)) > max_length:
                     max_length = len(str(cell.value))
-            except (TypeError, ValueError): # если значение не строковое или нет значения
+            except (
+                TypeError,
+                ValueError,
+            ):  # если значение не строковое или нет значения
                 pass
 
         sheet.column_dimensions[column_letter].width = max_length + 2
-        
+
     workbook.save(path_xlsx)
 
 
 def json_to_csv(json_path: str, csv_path: str) -> None:
     """
     Преобразует JSON файл в формат CSV.
-    
+
     Функция читает JSON файл, содержащий список словарей (объектов),
     и создает CSV файл с соответствующими колонками и строками.
-    
+
     Особенности:
     - Поддерживает только JSON структуру: список словарей [{"key": "value"}, ...]
     - Автоматически определяет все поля из всех объектов
@@ -269,7 +293,7 @@ def json_to_csv(json_path: str, csv_path: str) -> None:
     - Порядок колонок определяется полями первого объекта
     - Использует UTF-8 кодировку
     - Создает родительские директории для выходного файла при необходимости
-    
+
     Raises:
         FileNotFoundError: Если исходный JSON файл не найден
         IsADirectoryError: Если json_path указывает на директорию
@@ -295,38 +319,38 @@ def json_to_csv(json_path: str, csv_path: str) -> None:
         raise ValueError("json_path пустой")
     if not csv_path:
         raise ValueError("csv_path пустой")
-    
-    if not json_path.endswith('.json'):
+
+    if not json_path.endswith(".json"):
         raise ValueError("json_path должен указывать на .json файл")
-    if not csv_path.endswith('.csv'):
+    if not csv_path.endswith(".csv"):
         raise ValueError("csv_path должен указывать на .csv файл")
-        
+
     # Создание родительских директорий для выходного файла
     ensure_parent_dir(path_csv)
 
     data = []
     with path_json.open("r", encoding="utf-8") as file:
         data = json.load(file)
-    
+
     # Проверка: пустой JSON или неподдерживаемая структура
     if not data:
         raise ValueError("Пустой JSON или неподдерживаемая структура")
-    
+
     # Проверка: список с не-словарями
     if not isinstance(data, list):
         raise ValueError("JSON должен содержать список объектов")
-    
+
     for i, item in enumerate(data):
         if not isinstance(item, dict):
             raise ValueError(f"Элемент {i} не является словарем")
-    
+
     # Собираем все поля, начиная с полей первого объекта
     all_fields = list(data[0].keys())  # начинаем с полей первого объекта
     for item in data[1:]:  # добавляем поля из остальных объектов
         for field in item.keys():
             if field not in all_fields:
                 all_fields.append(field)
-        
+
     with path_csv.open("w", newline="", encoding="utf-8") as file:
         csv_writer = csv.DictWriter(file, fieldnames=all_fields, delimiter=",")
         csv_writer.writeheader()
@@ -335,13 +359,14 @@ def json_to_csv(json_path: str, csv_path: str) -> None:
             complete_row = {field: row.get(field, "") for field in all_fields}
             csv_writer.writerow(complete_row)
 
+
 def csv_to_json(csv_path: str, json_path: str) -> None:
     """
     Преобразует CSV файл в формат JSON (список словарей).
-    
+
     Функция читает CSV файл с заголовками и создает JSON файл,
     где каждая строка CSV становится отдельным словарем.
-    
+
     Особенности:
     - Требует наличия заголовков в первой строке CSV
     - Автоматически определяет наличие заголовков через csv.Sniffer
@@ -349,7 +374,7 @@ def csv_to_json(csv_path: str, json_path: str) -> None:
     - Использует UTF-8 кодировку
     - Создает родительские директории для выходного файла при необходимости
     - Результирующий JSON форматируется с отступами для читаемости
-     
+
     Raises:
         FileNotFoundError: Если исходный CSV файл не найден
         IsADirectoryError: Если csv_path указывает на директорию
@@ -359,7 +384,7 @@ def csv_to_json(csv_path: str, json_path: str) -> None:
     """
     import csv
     import json
-    
+
     path_csv = Path(csv_path)
     path_json = Path(json_path)
 
@@ -376,9 +401,9 @@ def csv_to_json(csv_path: str, json_path: str) -> None:
     if not isinstance(json_path, str):
         raise TypeError("json_path должен быть строкой")
 
-    if not csv_path.endswith('.csv'):
+    if not csv_path.endswith(".csv"):
         raise ValueError("csv_path должен указывать на .csv файл")
-    if not json_path.endswith('.json'):
+    if not json_path.endswith(".json"):
         raise ValueError("json_path должен указывать на .json файл")
 
     # Создание родительских директорий для выходного файла
@@ -390,9 +415,9 @@ def csv_to_json(csv_path: str, json_path: str) -> None:
         sample = file.read(1024)  # Читаем первые 1024 символа для анализа
         if not sample.strip():
             raise ValueError("CSV файл пустой")
-        
+
         file.seek(0)  # Возвращаемся к началу файла
-        
+
         # Проверяем наличие заголовков через Sniffer
         sniffer = csv.Sniffer()
         try:
@@ -400,14 +425,16 @@ def csv_to_json(csv_path: str, json_path: str) -> None:
         except csv.Error:
             # Если Sniffer не может определить, считаем что заголовок есть
             has_header = True
-        
+
         if not has_header:
-            raise ValueError("CSV файл, вероятно, не содержит заголовок (эвритический подход)")
-        
+            raise ValueError(
+                "CSV файл, вероятно, не содержит заголовок (эвритический подход)"
+            )
+
         csv_reader = csv.DictReader(file)
-        
+
         for row in csv_reader:
             data.append(row)
-    
+
     with path_json.open("w", encoding="utf-8") as file:
         json.dump(data, file, ensure_ascii=False, indent=2)

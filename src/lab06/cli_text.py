@@ -1,7 +1,8 @@
 import argparse
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 from lib.text import *
 from pathlib import Path
 
@@ -21,14 +22,14 @@ def main():
     stats_parser.add_argument("--top", type=int, default=5)
 
     args = parser.parse_args()
-    
+
     # если подкоманда не указана — показать помощь и выйти.
     if not args.command:
         parser.print_help()
         return
-    
+
     if args.command == "cat":
-        """ Реализация команды cat """
+        """Реализация команды cat"""
         file_path = args.input
 
         if not Path(file_path).exists():
@@ -46,16 +47,16 @@ def main():
             print(f"Ошибка при чтении файла: {e}")
 
     elif args.command == "stats":
-        """ Реализация команды stats """
+        """Реализация команды stats"""
         file_path = args.input
 
         if not Path(file_path).exists():
             raise FileNotFoundError(f"Файл не найден: {file_path}")
 
-        try:    
+        try:
             with open(file_path, "r", encoding="utf-8") as file:
                 text = file.read()
-            
+
             normalize_text = normalize(text)
             tokens = tokenize(normalize_text)
             freq = count_freq(tokens)
@@ -68,6 +69,7 @@ def main():
     else:
         parser.print_help()
         return
+
 
 if __name__ == "__main__":
     main()

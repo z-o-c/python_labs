@@ -1,11 +1,13 @@
 def min_max(nums: list[float | int]) -> tuple[float | int, float | int]:
     """Возвращает кортеж (минимум, максимум). Если список пуст — ValueError"""
-    
+
     if len(nums) == 0:
         raise ValueError("Список пуст")
-    
+
     else:
-        return (min(nums),max(nums))
+        return (min(nums), max(nums))
+
+
 try:
     print("min_max")
     print("Тест 1:", min_max([3, -1, 5, 5, 0]))
@@ -20,6 +22,7 @@ except ValueError as e:
 def unique_sorted(nums: list[float | int]) -> list[float | int]:
     """Возвращает отсортированный список уникальных значений (по возрастанию)"""
     return list(sorted(set(nums)))
+
 
 print(f"\nunique_sorted")
 print("Тест 1:", unique_sorted([3, 1, 2, 1, 3]))
@@ -36,9 +39,10 @@ def flatten(mat: list[list | tuple]) -> list:
     for i in mat:
         if not isinstance(i, (list, tuple)):
             raise TypeError("строка не строка строк матрицы")
-        result.extend(i)    
-    
+        result.extend(i)
+
     return result
+
 
 try:
     print(f"\nflatten")

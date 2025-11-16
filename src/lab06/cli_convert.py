@@ -1,9 +1,11 @@
 import argparse
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 from lib.text import json_to_csv, csv_to_json, csv_to_xlsx
+
 
 def main():
     parser = argparse.ArgumentParser(description="Конвертеры данных")
@@ -29,6 +31,7 @@ def main():
         csv_to_json(args.input, args.output)
     elif args.cmd == "csv2xlsx":
         csv_to_xlsx(args.input, args.output)
+
 
 if __name__ == "__main__":
     main()

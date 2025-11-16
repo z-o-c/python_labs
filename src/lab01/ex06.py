@@ -14,4 +14,5 @@ def solve():
 
     return print(true_count, false_count)
 
+
 solve()

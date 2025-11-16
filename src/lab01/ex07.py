@@ -7,14 +7,15 @@ def find_word(test):
         if i.isupper():
             end += i
             break
-    
+
     for i in test:
         count_2 += 1
         if i.isdigit():
             break
-    
-    end += test[count_2::count_2 - count_1 + 1]
+
+    end += test[count_2 :: count_2 - count_1 + 1]
     return end
+
 
 test = input()
 print(find_word(test))

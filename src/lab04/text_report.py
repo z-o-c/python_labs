@@ -2,7 +2,8 @@ from io_txt_csv import *
 
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
 from lib.text import *
 
@@ -23,7 +24,11 @@ else:
         print(f"{word}: {count}")
     print("\n")
 
-    write_csv([(word, count) for word, count in num_tokens_1.items()], "data/lab04/report.csv", header=("word", "count"))
+    write_csv(
+        [(word, count) for word, count in num_tokens_1.items()],
+        "data/lab04/report.csv",
+        header=("word", "count"),
+    )
 
 # читаем и обрабатываем несколько входных файлов + «сводный» отчет
 text_2 = normalize(read_text("data/lab04/a.txt"))
@@ -38,17 +43,29 @@ top_tokens_3 = top_n(num_tokens_3, 5)
 
 report_per_file = {
     "a.txt": [(word, count) for word, count in num_tokens_2.items()],
-    "b.txt": [(word, count) for word, count in num_tokens_3.items()]
+    "b.txt": [(word, count) for word, count in num_tokens_3.items()],
 }
 
 report_total = count_freq(token_text_2 + token_text_3)
 report_total_list = [(word, count) for word, count in report_total.items()]
 
 # записываем отчет по файлам
-write_csv([(file, word, count) for file, words in report_per_file.items() for word, count in words], "data/lab04/report_per_file.csv", header=("file", "word", "count"))
+write_csv(
+    [
+        (file, word, count)
+        for file, words in report_per_file.items()
+        for word, count in words
+    ],
+    "data/lab04/report_per_file.csv",
+    header=("file", "word", "count"),
+)
 
 # записываем общий отчет
-write_csv([(word, count) for word, count in report_total.items()], "data/lab04/report_total.csv", header=("word", "count"))
+write_csv(
+    [(word, count) for word, count in report_total.items()],
+    "data/lab04/report_total.csv",
+    header=("word", "count"),
+)
 
 # выводим красивый отчет в табличном виде
 print("Общий отчет:")

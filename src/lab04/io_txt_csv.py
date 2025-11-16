@@ -18,7 +18,7 @@ def read_text(path: str | Path, encoding: str = "utf-8") -> str:
     Параметры:
         path: Путь к файлу (str или Path).
         encoding: Кодировка чтения (по умолчанию "utf-8").
-            Распространенные варианты кодировок: 
+            Распространенные варианты кодировок:
                 - 'utf-8' (стандартная)
                 - 'cp1251', 'windows-1251' (русская Windows)
                 - 'koi8-r' (русская KOI8)
@@ -42,6 +42,7 @@ def read_text(path: str | Path, encoding: str = "utf-8") -> str:
 
     with p.open("r", encoding=encoding) as file:
         return file.read()
+
 
 def write_csv(
     rows: Iterable[Sequence],
