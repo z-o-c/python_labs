@@ -1,7 +1,7 @@
 import json, csv
 from pathlib import Path
 import pytest
-from src.lab05.json_csv import json_to_csv, csv_to_json
+from src.lib.text import json_to_csv, csv_to_json
 
 
 def write_json(path: Path, obj):
