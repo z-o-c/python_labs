@@ -67,3 +67,14 @@
 - Data — пример входных данных и результаты:
     - [Samples](data/lab06/samples)
     - [Out](data/lab06/out)
+
+## Лабораторная работа 7: Тестирование (pytest + black)
+
+- [README](src/lab07/README.md) — подробное описание лабораторной
+
+- Тесты — модульные тесты для функций:
+    - [test_text](tests/test_text.py) — тесты для функций из `src/lib/text.py`
+    - [test_json_csv](tests/test_json_csv.py) — тесты для функций конвертации
+
+- Конфигурация:
+    - [pyproject.toml](pyproject.toml) — настройки pytest, black и покрытия кода
