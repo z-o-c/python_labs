@@ -30,19 +30,14 @@ dev = [
 pythonpath = [
     ".", "src"
 ]
-addopts = [
-    "-q",
-    "--cov-report=term-missing",
-    "--cov=src",
-    "--cov-exclude", "src/__init__.py",      # Разделили опцию и значение
-    "--cov-exclude", "src/lib/__init__.py",  # Разделили опцию и значение
-]
+addopts = "-q --cov=src --cov-report=term-missing"
+testpaths = ["tests"]
+
 [tool.coverage.run]
 omit = [
     "src/__init__.py",
     "src/lib/__init__.py",
 ]
-testpaths = ["tests"]
 
 # Настройки Black
 [tool.black]

@@ -1,5 +1,6 @@
 import json, csv
 from pathlib import Path
+from unittest.mock import patch, MagicMock
 
 import pytest
 
@@ -162,4 +163,66 @@ def test_csv_to_json_empty_raises(tmp_path: Path):
     src = tmp_path / "bad.csv"
     src.write_text("", encoding="utf-8")
     with pytest.raises(ValueError):
+        csv_to_json(str(src), str(tmp_path / "out.json"))
+
+
+def test_json_to_csv_empty_paths():
+    """Тест для строк 319, 321 - проверка пустых путей в json_to_csv"""
+    # Используем patch для обхода проверок существования
+    with patch('pathlib.Path.exists', return_value=True), \
+         patch('pathlib.Path.is_file', return_value=True):
+        with pytest.raises(ValueError, match="json_path пустой"):
+            json_to_csv("", "out.csv")
+    
+    with patch('pathlib.Path.exists', return_value=True), \
+         patch('pathlib.Path.is_file', return_value=True):
+        with pytest.raises(ValueError, match="csv_path пустой"):
+            json_to_csv("data.json", "")
+
+
+def test_csv_to_json_empty_paths():
+    """Тест для строк 396, 398 - проверка пустых путей в csv_to_json"""
+    # Используем patch для обхода проверок существования
+    with patch('pathlib.Path.exists', return_value=True), \
+         patch('pathlib.Path.is_file', return_value=True):
+        with pytest.raises(ValueError, match="csv_path пустой"):
+            csv_to_json("", "out.json")
+    
+    with patch('pathlib.Path.exists', return_value=True), \
+         patch('pathlib.Path.is_file', return_value=True):
+        with pytest.raises(ValueError, match="json_path пустой"):
+            csv_to_json("data.csv", "")
+
+
+def test_csv_to_json_sniffer_error(tmp_path: Path):
+    """Тест для строк 425-427 - обработка csv.Error в Sniffer"""
+    # Создаем CSV файл с заголовком
+    src = tmp_path / "weird.csv"
+    src.write_text("name\nAlice\n", encoding="utf-8")
+    
+    # Используем mock для csv.Sniffer, чтобы вызвать csv.Error
+    with patch('csv.Sniffer') as mock_sniffer:
+        mock_sniffer_instance = MagicMock()
+        mock_sniffer_instance.has_header.side_effect = csv.Error("Sniffer error")
+        mock_sniffer.return_value = mock_sniffer_instance
+        
+        # Функция должна обработать ошибку и считать, что заголовок есть
+        dst = tmp_path / "out.json"
+        csv_to_json(str(src), str(dst))
+        # Проверяем, что файл был создан
+        assert dst.exists()
+        # Проверяем содержимое
+        data = json.loads(dst.read_text(encoding="utf-8"))
+        assert len(data) == 1
+        assert data[0]["name"] == "Alice"
+
+
+def test_csv_to_json_no_header_detected(tmp_path: Path):
+    """Тест для строки 430 - CSV файл без заголовка (определяется Sniffer)"""
+    src = tmp_path / "no_header.csv"
+    # Создаем CSV файл, который Sniffer определит как не имеющий заголовка
+    # Это может быть файл, где все строки выглядят как данные
+    src.write_text("1,2,3\n4,5,6\n7,8,9\n", encoding="utf-8")
+    
+    with pytest.raises(ValueError, match="не содержит заголовок"):
         csv_to_json(str(src), str(tmp_path / "out.json"))
