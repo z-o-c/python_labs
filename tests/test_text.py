@@ -1,5 +1,10 @@
 import pytest
-from src.lib.text import normalize, tokenize, count_freq, top_n
+from src.lib.text import (
+    normalize,
+    tokenize,
+    count_freq,
+    top_n
+)
 
 
 @pytest.mark.parametrize(
@@ -39,3 +44,31 @@ def test_count_and_top():
 def test_top_tie_breaker():
     freq = count_freq(["bb", "aa", "bb", "aa", "cc"])
     assert top_n(freq, 2) == [("aa", 2), ("bb", 2)]
+
+
+def test_normalize_errors():
+    with pytest.raises(ValueError):
+        normalize("")  # пустая строка
+    with pytest.raises(ValueError):
+        normalize(123)  # не строка
+
+
+def test_tokenize_errors():
+    with pytest.raises(ValueError):
+        tokenize("")  # пустая строка
+    with pytest.raises(ValueError):
+        tokenize(123)  # не строка
+
+
+def test_count_freq_errors():
+    with pytest.raises(ValueError):
+        count_freq([])  # пустой список
+    with pytest.raises(ValueError):
+        count_freq("abc")  # не список
+
+
+def test_top_n_errors():
+    with pytest.raises(ValueError):
+        top_n({})  # пустой словарь
+    with pytest.raises(ValueError):
+        top_n(["a", "b"])  # не словарь
