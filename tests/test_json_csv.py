@@ -67,7 +67,9 @@ def test_json_to_csv_directory_input(tmp_path: Path):
     directory = tmp_path / "dir_input"
     directory.mkdir()
     with pytest.raises(IsADirectoryError):
-        json_to_csv(str(directory), str(tmp_path / "out.csv")) # директория вместо json файла
+        json_to_csv(
+            str(directory), str(tmp_path / "out.csv")
+        )  # директория вместо json файла
 
 
 def test_json_to_csv_type_checks(tmp_path: Path):
@@ -91,10 +93,10 @@ def test_json_to_csv_wrong_extensions(tmp_path: Path):
     txt_src.write_text("{}", encoding="utf-8")
 
     with pytest.raises(ValueError):
-        json_to_csv(str(txt_src), str(tmp_path / "out.csv")) # не json файл
+        json_to_csv(str(txt_src), str(tmp_path / "out.csv"))  # не json файл
 
     with pytest.raises(ValueError):
-        json_to_csv(str(src), str(tmp_path / "out.txt")) # не csv файл
+        json_to_csv(str(src), str(tmp_path / "out.txt"))  # не csv файл
 
 
 def test_json_to_csv_structure_checks(tmp_path: Path):
@@ -103,11 +105,11 @@ def test_json_to_csv_structure_checks(tmp_path: Path):
 
     src.write_text('{"name": "Ann"}', encoding="utf-8")
     with pytest.raises(ValueError, match="список"):
-        json_to_csv(str(src), str(dst)) # не список объектов
+        json_to_csv(str(src), str(dst))  # не список объектов
 
     src.write_text('["not a dict"]', encoding="utf-8")
     with pytest.raises(ValueError):
-        json_to_csv(str(src), str(dst)) # не словарь
+        json_to_csv(str(src), str(dst))  # не словарь
 
 
 def test_json_to_csv_adds_missing_fields(tmp_path: Path):
@@ -121,16 +123,18 @@ def test_json_to_csv_adds_missing_fields(tmp_path: Path):
 
     json_to_csv(str(src), str(dst))
     rows = read_csv_rows(dst)
-    assert set(rows[0]) == {"name", "age", "city"} # проверка на наличие всех полей
-    assert rows[1]["age"] == "" # проверка на наличие пустых полей
-    assert rows[1]["city"] == "NY" # проверка на наличие значений
+    assert set(rows[0]) == {"name", "age", "city"}  # проверка на наличие всех полей
+    assert rows[1]["age"] == ""  # проверка на наличие пустых полей
+    assert rows[1]["city"] == "NY"  # проверка на наличие значений
 
 
 def test_csv_to_json_directory_input(tmp_path: Path):
     directory = tmp_path / "dir_input"
     directory.mkdir()
     with pytest.raises(IsADirectoryError):
-        csv_to_json(str(directory), str(tmp_path / "out.json")) # директория вместо csv файла
+        csv_to_json(
+            str(directory), str(tmp_path / "out.json")
+        )  # директория вместо csv файла
 
 
 def test_csv_to_json_type_checks(tmp_path: Path):
@@ -153,10 +157,10 @@ def test_csv_to_json_wrong_extensions(tmp_path: Path):
     txt_src.write_text("name\nAnn\n", encoding="utf-8")
 
     with pytest.raises(ValueError):
-        csv_to_json(str(txt_src), str(tmp_path / "out.json")) # не csv файл
+        csv_to_json(str(txt_src), str(tmp_path / "out.json"))  # не csv файл
 
     with pytest.raises(ValueError):
-        csv_to_json(str(src), str(tmp_path / "out.txt")) # не json файл
+        csv_to_json(str(src), str(tmp_path / "out.txt"))  # не json файл
 
 
 def test_csv_to_json_empty_raises(tmp_path: Path):
@@ -169,13 +173,17 @@ def test_csv_to_json_empty_raises(tmp_path: Path):
 def test_json_to_csv_empty_paths():
     """Тест для строк 319, 321 - проверка пустых путей в json_to_csv"""
     # Используем patch для обхода проверок существования
-    with patch('pathlib.Path.exists', return_value=True), \
-         patch('pathlib.Path.is_file', return_value=True):
+    with (
+        patch("pathlib.Path.exists", return_value=True),
+        patch("pathlib.Path.is_file", return_value=True),
+    ):
         with pytest.raises(ValueError, match="json_path пустой"):
             json_to_csv("", "out.csv")
-    
-    with patch('pathlib.Path.exists', return_value=True), \
-         patch('pathlib.Path.is_file', return_value=True):
+
+    with (
+        patch("pathlib.Path.exists", return_value=True),
+        patch("pathlib.Path.is_file", return_value=True),
+    ):
         with pytest.raises(ValueError, match="csv_path пустой"):
             json_to_csv("data.json", "")
 
@@ -183,13 +191,17 @@ def test_json_to_csv_empty_paths():
 def test_csv_to_json_empty_paths():
     """Тест для строк 396, 398 - проверка пустых путей в csv_to_json"""
     # Используем patch для обхода проверок существования
-    with patch('pathlib.Path.exists', return_value=True), \
-         patch('pathlib.Path.is_file', return_value=True):
+    with (
+        patch("pathlib.Path.exists", return_value=True),
+        patch("pathlib.Path.is_file", return_value=True),
+    ):
         with pytest.raises(ValueError, match="csv_path пустой"):
             csv_to_json("", "out.json")
-    
-    with patch('pathlib.Path.exists', return_value=True), \
-         patch('pathlib.Path.is_file', return_value=True):
+
+    with (
+        patch("pathlib.Path.exists", return_value=True),
+        patch("pathlib.Path.is_file", return_value=True),
+    ):
         with pytest.raises(ValueError, match="json_path пустой"):
             csv_to_json("data.csv", "")
 
@@ -199,13 +211,13 @@ def test_csv_to_json_sniffer_error(tmp_path: Path):
     # Создаем CSV файл с заголовком
     src = tmp_path / "weird.csv"
     src.write_text("name\nAlice\n", encoding="utf-8")
-    
+
     # Используем mock для csv.Sniffer, чтобы вызвать csv.Error
-    with patch('csv.Sniffer') as mock_sniffer:
+    with patch("csv.Sniffer") as mock_sniffer:
         mock_sniffer_instance = MagicMock()
         mock_sniffer_instance.has_header.side_effect = csv.Error("Sniffer error")
         mock_sniffer.return_value = mock_sniffer_instance
-        
+
         # Функция должна обработать ошибку и считать, что заголовок есть
         dst = tmp_path / "out.json"
         csv_to_json(str(src), str(dst))
@@ -223,6 +235,6 @@ def test_csv_to_json_no_header_detected(tmp_path: Path):
     # Создаем CSV файл, который Sniffer определит как не имеющий заголовка
     # Это может быть файл, где все строки выглядят как данные
     src.write_text("1,2,3\n4,5,6\n7,8,9\n", encoding="utf-8")
-    
+
     with pytest.raises(ValueError, match="не содержит заголовок"):
         csv_to_json(str(src), str(tmp_path / "out.json"))

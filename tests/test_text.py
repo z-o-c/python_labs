@@ -1,10 +1,5 @@
 import pytest
-from src.lib.text import (
-    normalize,
-    tokenize,
-    count_freq,
-    top_n
-)
+from src.lib.text import normalize, tokenize, count_freq, top_n
 
 
 @pytest.mark.parametrize(
