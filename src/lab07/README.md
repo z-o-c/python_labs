@@ -179,6 +179,8 @@ pytest tests/test_json_csv.py
 
 ### Проверка стиля кода
 
+ ![black](/images/lab07/img02.png)
+
 **Форматирование:**
 ```bash
 black .
@@ -200,6 +202,8 @@ black --check .
 - **Провалено:** 0
 
 ### Покрытие кода
+
+ ![pytest](/images/lab07/img01.png)
 
 **Текущее покрытие:** **64%**
 
