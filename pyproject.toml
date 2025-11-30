@@ -3,6 +3,13 @@
 requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
 
+# Конфигурация setuptools
+[tool.setuptools]
+packages = ["src"]
+
+[tool.setuptools.package-dir]
+"" = "src"
+
 # 2. МЕТАДАННЫЕ ПРОЕКТА
 [project]
 name = "python-labs"
