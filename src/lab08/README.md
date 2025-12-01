@@ -51,7 +51,9 @@
  ![models](/images/lab08/img02.png)
 
 `students_input.json`
+
  ![models](/images/lab08/img01.png)
 
  `students_output.json` Сортировка по GPA (по убыванию)
+ 
  ![models](/images/lab08/img04.png)
