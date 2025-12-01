@@ -99,7 +99,7 @@ if __name__ == "__main__":
     try:
         student = Student(
             fio="Иванов Иван Иванович",
-            birthdate="1990.01.01", 
+            birthdate="2005.01.01", 
             group="BIVT-25", 
             gpa=4.5
         )

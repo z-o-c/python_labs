@@ -2,7 +2,7 @@
 
 ## Реализованные компоненты
 
-### 1. Модель `Student` (`models.py`)
+### 1. Модель `Student` ([models](src/lab08/models.py))
 
 Класс данных для представления студента с использованием `@dataclass`.
 
@@ -25,21 +25,9 @@
 - Проверка диапазона `gpa` (0-5)
 - Проверка формата даты `birthdate` (YYYY.MM.DD)
 
-**Пример использования:**
-```python
-student = Student(
-    fio="Иванов Иван Иванович",
-    birthdate="2005.01.01",
-    group="BIVT-25",
-    gpa=4.5
-)
+ ![models](/images/lab08/img03.png)
 
-print(student)  # Студент: Иванов Иван Иванович, Группа: BIVT-25, GPA: 4.5, Возраст: 19
-print(student.age())  # 19
-print(student.to_dict())  # {'fio': '...', 'birthdate': '...', ...}
-```
-
-### 2. Функции сериализации (`serialize.py`)
+### 2. Функции сериализации ([serialize](src/lab08/serialize.py))
 
 #### `students_to_json(students: list[Student], path: str | Path) -> None`
 
@@ -49,15 +37,6 @@ print(student.to_dict())  # {'fio': '...', 'birthdate': '...', ...}
 - `students` — список объектов `Student`
 - `path` — путь к выходному JSON файлу
 
-**Пример:**
-```python
-students = [
-    Student(fio="Иванов Иван", birthdate="2005.01.01", group="BIVT-25", gpa=4.5),
-    Student(fio="Петров Пётр", birthdate="2006.02.02", group="BIVT-25", gpa=4.6),
-]
-
-students_to_json(students, "data/lab08/students.json")
-```
 
 #### `students_from_json(path: str | Path) -> list[Student]`
 
@@ -69,10 +48,10 @@ students_to_json(students, "data/lab08/students.json")
 **Возвращает:**
 - Список объектов `Student`
 
-**Пример:**
-```python
-students = students_from_json("data/lab08/students.json")
-for student in students:
-    print(student)
-```
+ ![models](/images/lab08/img02.png)
 
+`students_input.json`
+ ![models](/images/lab08/img01.png)
+
+ `students_output.json` Сортировка по GPA (по убыванию)
+ ![models](/images/lab08/img04.png)
