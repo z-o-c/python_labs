@@ -4,11 +4,8 @@ requires = ["setuptools>=64"]
 build-backend = "setuptools.build_meta"
 
 # Конфигурация setuptools
-[tool.setuptools]
-packages = ["src"]
-
-[tool.setuptools.package-dir]
-"" = "src"
+[tool.setuptools.packages.find]
+where = ["src"]
 
 # 2. МЕТАДАННЫЕ ПРОЕКТА
 [project]

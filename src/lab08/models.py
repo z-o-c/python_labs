@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from datetime import datetime, date
 
-@dataclass #  декоратор для автоматической генерации методов __init__, __repr__, __eq__, (order=False, frozen=False, slots=False, unsafe_hash=False)
+
+@dataclass  #  декоратор для автоматической генерации методов __init__, __repr__, __eq__, (order=False, frozen=False, slots=False, unsafe_hash=False)
 class Student:
     fio: str
     birthdate: str
@@ -21,30 +22,33 @@ class Student:
         """
         if not isinstance(self.fio, str):
             raise ValueError("fio не str")
-        
+
         if len(self.fio) == 0:
             raise ValueError("fio не может быть пустым")
-        
+
         if not isinstance(self.group, str):
             raise ValueError("group не str")
-        
+
         if len(self.group) == 0:
             raise ValueError("group не может быть пустым")
 
         if not isinstance(self.gpa, float):
             raise ValueError("gpa не float")
-        
+
         if not (0 <= self.gpa <= 5):
             raise ValueError("gpa должен быть между 0 и 5")
 
         if not isinstance(self.birthdate, str):
             raise ValueError("birthdate должен быть строкой")
-        
+
         try:
-            datetime.strptime(self.birthdate, "%Y.%m.%d") #  преобразует строку в объект datetime формата YYYY.MM.DD
+            datetime.strptime(
+                self.birthdate, "%Y.%m.%d"
+            )  #  преобразует строку в объект datetime формата YYYY.MM.DD
         except ValueError:
-            raise ValueError(f"birthdate должен быть в формате YYYY.MM.DD, получено: {self.birthdate}")
-        
+            raise ValueError(
+                f"birthdate должен быть в формате YYYY.MM.DD, получено: {self.birthdate}"
+            )
 
     def age(self) -> int:
         """
@@ -52,11 +56,17 @@ class Student:
         Returns:
             Возраст студента
         """
-        birth_date = datetime.strptime(self.birthdate, "%Y.%m.%d").date() # преобразует строку в объект date формата YYYY.MM.DD
-        today = date.today() # получает текущую дату
+        birth_date = datetime.strptime(
+            self.birthdate, "%Y.%m.%d"
+        ).date()  # преобразует строку в объект date формата YYYY.MM.DD
+        today = date.today()  # получает текущую дату
 
         # вычисление возраста студента, учитывая прошел ли день рождения в этом году
-        return today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day)) # сравнение кортежей лексикографически по элементам (месяц, день), возвращает True(1) или False(0)
+        return (
+            today.year
+            - birth_date.year
+            - ((today.month, today.day) < (birth_date.month, birth_date.day))
+        )  # сравнение кортежей лексикографически по элементам (месяц, день), возвращает True(1) или False(0)
 
     def to_dict(self) -> dict:
         """
@@ -84,7 +94,7 @@ class Student:
             fio=data["fio"],
             birthdate=data["birthdate"],
             group=data["group"],
-            gpa=data["gpa"]
+            gpa=data["gpa"],
         )
 
     def __str__(self) -> str:
@@ -95,13 +105,11 @@ class Student:
         """
         return f"Студент: {self.fio}, Группа: {self.group}, GPA: {self.gpa}, Возраст: {self.age()}"
 
+
 if __name__ == "__main__":
     try:
         student = Student(
-            fio="Иванов Иван Иванович",
-            birthdate="2005.01.01", 
-            group="BIVT-25", 
-            gpa=4.5
+            fio="Иванов Иван Иванович", birthdate="2005.01.01", group="BIVT-25", gpa=4.5
         )
         print(student)
         print(f"Словарь: {student.to_dict()}")
