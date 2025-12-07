@@ -1,6 +1,6 @@
 import csv
 from pathlib import Path
-from lab08.models import Student
+from src.lab08.models import Student
 
 
 class Group:
@@ -27,24 +27,33 @@ class Group:
         if not self.storage_path.exists():
             return
 
-        with open(self.storage_path, "r", encoding="utf-8", newline="") as f:
-            reader = csv.DictReader(f)
+        try:
+            with open(self.storage_path, "r", encoding="utf-8", newline="") as f:
+                reader = csv.DictReader(f)
 
-            for row in reader:
-                self.students.append(
-                    Student(
-                        fio=row["fio"],
-                        birthdate=row["birthdate"],
-                        group=row["group"],
-                        gpa=float(row["gpa"]),
-                    )
-                )
-            return
+                for row in reader:
+                    try:
+                        self.students.append(
+                            Student(
+                                fio=row["fio"],
+                                birthdate=row["birthdate"],
+                                group=row["group"],
+                                gpa=float(row["gpa"]),
+                            )
+                        )
+                    except (KeyError, ValueError) as e:
+                        # Пропускаем некорректные строки
+                        continue
+        except (IOError, csv.Error) as e:
+            # Если файл поврежден, начинаем с пустого списка
+            self.students = []
 
     def _save(self) -> None:
         """Логика сохранения списка self.students обратно в CSV файл"""
-        with open(self.storage_path, "w", encoding="utf-8", newline="") as f:
+        # Создаем родительские директории, если их нет
+        self.storage_path.parent.mkdir(parents=True, exist_ok=True)
 
+        with open(self.storage_path, "w", encoding="utf-8", newline="") as f:
             fieldnames = ["fio", "birthdate", "group", "gpa"]
             writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=",")
             writer.writeheader()
@@ -61,6 +70,9 @@ class Group:
 
     def add(self, student: Student) -> None:
         """Добавление студента в группу"""
+        # Проверка на дубликаты
+        if any(s.fio == student.fio for s in self.students):
+            raise ValueError(f"Студент с ФИО '{student.fio}' уже существует")
         self.students.append(student)
         self._save()
 
@@ -78,7 +90,10 @@ class Group:
 
     def remove(self, fio: str) -> None:
         """Удаляет студента с таким ФИО"""
+        initial_count = len(self.students)
         self.students = [student for student in self.students if student.fio != fio]
+        if len(self.students) == initial_count:
+            raise ValueError(f"Студент с ФИО '{fio}' не найден")
         self._save()
 
     def update(self, fio: str, **fields) -> None:
@@ -92,3 +107,4 @@ class Group:
                         raise ValueError(f"Студент не имеет поля {field}")
                 self._save()
                 return
+        raise ValueError(f"Студент с ФИО '{fio}' не найден")
