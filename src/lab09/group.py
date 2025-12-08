@@ -92,3 +92,19 @@ class Group:
                         raise ValueError(f"Студент не имеет поля {field}")
                 self._save()
                 return
+
+if __name__ == "__main__":
+    group = Group("data/lab09/students.csv")
+
+    # group.add(Student(fio="Васильев Василий Васильевич", birthdate="2005.01.01", group="BIVT-25", gpa=4.5))
+    # group.add(Student(fio="Кузнецов Кузьма Кузьмич", birthdate="2006.02.02", group="BIVT-25", gpa=4.6))
+    # group.add(Student(fio="Романов Роман Романович", birthdate="2007.03.03", group="BIVT-25", gpa=4.7))
+    # print("\n".join([str(student) for student in group.list()]))
+
+    # print(group.find("Романов"))
+
+    # group.remove("Романов Роман Романович")
+    # print("\n".join([str(student) for student in group.list()]))
+
+    group.update("Васильев Василий Васильевич", gpa=4.7)
+    print("\n".join([str(student) for student in group.list()]))
