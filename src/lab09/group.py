@@ -110,6 +110,7 @@ class Group:
                 return
         raise ValueError(f"Студент с ФИО '{fio}' не найден")
 
+
 if __name__ == "__main__":
     group = Group("data/lab09/students.csv")
 
