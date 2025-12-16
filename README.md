@@ -101,3 +101,16 @@
 
 - Data — примеры данных:
     - [lab09](data/lab09/) — CSV файл со студентами
+
+## Лабораторная работа 10: Структуры данных (стек, очередь, связный список)
+
+- [README](src/lab10/README.md) — подробное описание лабораторной
+
+- Исходный код структур:
+  - [structures.py (Stack, Queue)](src/lab10/structures.py)
+  - [linked_list.py (SinglyLinkedList)](src/lab10/linked_list.py)
+
+- Кратко:
+  - Реализованы классы стек, очередь (на deque) и односвязный список
+  - Покрыты основные операции (push/pop/enqueue/dequeue/insert/remove/peek/и др.)
+  - В README10 даны теоретическое обоснование и бенчмарки выбора структур
